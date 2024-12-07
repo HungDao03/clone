@@ -1,6 +1,6 @@
-package service;
+package org.example.temporary.service;
 
-import model.RoomBooking;
+import org.example.temporary.model.RoomBooking;
 
 import java.util.List;
 

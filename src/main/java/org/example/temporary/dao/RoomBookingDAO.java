@@ -1,8 +1,7 @@
-package dao;
+package org.example.temporary.dao;
 
-import model.RoomBooking;
+import org.example.temporary.model.RoomBooking;
 
-import java.sql.Connection;
 import java.util.List;
 
 

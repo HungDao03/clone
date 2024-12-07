@@ -1,8 +1,8 @@
-package service;
+package org.example.temporary.service;
 
 //import controller.RoomBooking;
-import dao.RoomBookingDAO;
-import model.RoomBooking;
+import org.example.temporary.dao.RoomBookingDAO;
+import org.example.temporary.model.RoomBooking;
 
 import java.sql.SQLException;
 import java.util.List;

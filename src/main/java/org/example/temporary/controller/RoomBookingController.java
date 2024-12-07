@@ -1,10 +1,10 @@
-package controller;
+package org.example.temporary.controller;
 
-import dao.RoomBookingDAO;
-import dao.RoomBookingDaoImpl;
-import model.RoomBooking;
-import service.RoomBookingService;
-import service.RoomBookingServiceImpl;
+import org.example.temporary.dao.RoomBookingDAO;
+import org.example.temporary.dao.RoomBookingDaoImpl;
+import org.example.temporary.model.RoomBooking;
+import org.example.temporary.service.RoomBookingService;
+import org.example.temporary.service.RoomBookingServiceImpl;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -18,25 +18,25 @@ import java.util.List;
 @WebServlet(name = "Controller", urlPatterns = "/main_roombooking")
 public class RoomBookingController extends HttpServlet {
     private RoomBookingDAO roomBookingDAO;
-
     private RoomBookingService roomBookingService;
 
 
     @Override
     public void init() throws ServletException {
         try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
             // Tạo kết nối tới cơ sở dữ liệu
             String url = "jdbc:mysql://localhost:3306/fake_hotell";
             String username = "root";
             String password = "hikkiroku";
 
 
-            try (Connection conn = DriverManager.getConnection(url, username, password)) {
-                RoomBookingDAO roomBookingDAO = new RoomBookingDaoImpl(conn);
+            Connection conn = DriverManager.getConnection(url, username, password);
+                roomBookingDAO = new RoomBookingDaoImpl(conn);
                 roomBookingService = new RoomBookingServiceImpl(roomBookingDAO);
-            }
 
-        } catch (SQLException e) {
+
+        } catch (SQLException | ClassNotFoundException e) {
             throw new ServletException("Lỗi kết nối csdl hoặc service", e);
         }
     }
@@ -47,9 +47,7 @@ public class RoomBookingController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
-            List<RoomBooking> roomsbooking = roomBookingService.getAllRooms();
-            request.setAttribute("roomsbooking", roomsbooking);
-            request.getRequestDispatcher("RoomBooking/listRoomBooking.jsp").forward(request, response);  // Chuyển tiếp tới JSP
+            showListRoomBooking(request,response);
         } catch (ServletException er) {
             er.printStackTrace();
         } catch (IOException io) {
@@ -59,6 +57,25 @@ public class RoomBookingController extends HttpServlet {
             e.printStackTrace();
         }
     }
+
+    private void showListRoomBooking(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        try {
+            List<RoomBooking> roomsbookings = roomBookingService.getAllRooms();
+            request.setAttribute("roomsbookings", roomsbookings);
+            request.getRequestDispatcher("RoomBooking/listRoomBooking.jsp").forward(request, response);
+        } catch (Exception e) {
+            e.printStackTrace();
+            request.setAttribute("errorMessage", "Không thể lấy danh sách phòng.");
+            request.getRequestDispatcher("RoomBooking/listRoomBooking.jsp").forward(request, response);
+        }
+    }
+
+
+
+
+
+
+
 
 
 

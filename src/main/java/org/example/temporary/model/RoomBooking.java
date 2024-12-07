@@ -1,4 +1,4 @@
-package model;
+package org.example.temporary.model;
 
 
 

@@ -1,6 +1,6 @@
-package dao;
+package org.example.temporary.dao;
 
-import model.RoomBooking;
+import org.example.temporary.model.RoomBooking;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -14,24 +14,24 @@ public class RoomBookingDaoImpl implements RoomBookingDAO {
     }
 
     public List<RoomBooking> selectAllRooms() throws SQLException {   //lấy thông tin trên CSDL về để nhét vào arraylist rooms.
-        String query = "SELECT * FROM rooms";
+        String query = "SELECT * FROM room";
         List<RoomBooking> rooms = new ArrayList<>();
         try (Statement stmt = connection.createStatement();
              ResultSet rs = stmt.executeQuery(query)) {
 
             while (rs.next()) {
                 RoomBooking room = new RoomBooking(
-                        rs.getInt("room_id"),
-                        rs.getInt("room_type_id"),
-                        rs.getInt("room_owner"),
-                        rs.getString("room_code"),
-                        rs.getString("room_location"),
-                        rs.getString("room_description"),
-                        rs.getString("room_img_link"),
-                        rs.getDouble("room_price"),
-                        rs.getString("room_status"),
-                        rs.getTimestamp("room_create_date"),
-                        rs.getTimestamp("room_update_date")
+                        rs.getInt("RoomId"),
+                        rs.getInt("RoomTypeId"),
+                        rs.getInt("RoomOwner"),
+                        rs.getString("RoomCode"),
+                        rs.getString("RoomLocation"),
+                        rs.getString("RoomDescription"),
+                        rs.getString("RoomImgLink"),
+                        rs.getDouble("RoomPrice"),
+                        rs.getString("RoomStatus"),
+                        rs.getTimestamp("RoomCreateDate"),
+                        rs.getTimestamp("RoomUpdateDate")
                 );
                 rooms.add(room);
             }
@@ -40,23 +40,23 @@ public class RoomBookingDaoImpl implements RoomBookingDAO {
     }
 
     public RoomBooking selectRoomById(int roomId) throws SQLException { // tìm roomID từ CSDL ở vị trí id thứ ? rồi lấy toàn bộ CSDL của dòng id ấy
-        String query = "SELECT * FROM rooms WHERE room_id = ?";
+        String query = "SELECT * FROM room WHERE room_id = ?";
         try (PreparedStatement pstmt = connection.prepareStatement(query)) {
             pstmt.setInt(1, roomId);
             try (ResultSet rs = pstmt.executeQuery()) {
                 if (rs.next()) {
                     return new RoomBooking(
-                            rs.getInt("room_id"),
-                            rs.getInt("room_type_id"),
-                            rs.getInt("room_owner"),
-                            rs.getString("room_code"),
-                            rs.getString("room_location"),
-                            rs.getString("room_description"),
-                            rs.getString("room_img_link"),
-                            rs.getDouble("room_price"),
-                            rs.getString("room_status"),
-                            rs.getTimestamp("room_create_date"),
-                            rs.getTimestamp("room_update_date")
+                            rs.getInt("RoomId"),
+                            rs.getInt("RoomTypeId"),
+                            rs.getInt("RoomOwner"),
+                            rs.getString("RoomCode"),
+                            rs.getString("RoomLocation"),
+                            rs.getString("RoomDescription"),
+                            rs.getString("RoomImgLink"),
+                            rs.getDouble("RoomPrice"),
+                            rs.getString("RoomStatus"),
+                            rs.getTimestamp("RoomCreateDate"),
+                            rs.getTimestamp("RoomUpdateDate")
                     );
                 }
             }
@@ -65,7 +65,7 @@ public class RoomBookingDaoImpl implements RoomBookingDAO {
     }
 
     public boolean insertRoom(RoomBooking room) throws SQLException {   //Truyền room chứa những dữ liệu do người dùng cung cấp vào phương thức này rồi sau đó gửi room chứa những dữ liệu mới này lên CSDL
-        String query = "INSERT INTO rooms (room_type_id, room_owner, room_code, room_location, room_description, room_img_link, room_price, room_status, room_create_date, room_update_date) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String query = "INSERT INTO room (room_type_id, room_owner, room_code, room_location, room_description, room_img_link, room_price, room_status, room_create_date, room_update_date) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         try (PreparedStatement pstmt = connection.prepareStatement(query)) {
             pstmt.setInt(1, room.getRoomTypeId());
             pstmt.setInt(2, room.getRoomOwner());
@@ -82,7 +82,7 @@ public class RoomBookingDaoImpl implements RoomBookingDAO {
     }
 
     public boolean updateRoomtoSQL(RoomBooking room) throws SQLException { //sửa thông tin ở một ví trí nào đó trong CSDL
-        String query = "UPDATE rooms SET room_type_id = ?, room_owner = ?, room_code = ?, room_location = ?, room_description = ?, room_img_link = ?, room_price = ?, room_status = ?, room_update_date = ? WHERE room_id = ?";
+        String query = "UPDATE room SET room_type_id = ?, room_owner = ?, room_code = ?, room_location = ?, room_description = ?, room_img_link = ?, room_price = ?, room_status = ?, room_update_date = ? WHERE room_id = ?";
         try (PreparedStatement pstmt = connection.prepareStatement(query)) {
             pstmt.setInt(1, room.getRoomTypeId());
             pstmt.setInt(2, room.getRoomOwner());
@@ -99,7 +99,7 @@ public class RoomBookingDaoImpl implements RoomBookingDAO {
     }
 
     public boolean deleteRoomtoSQL(int roomId) throws SQLException {
-        String query = "DELETE FROM rooms WHERE room_id = ? AND room_status = 'available'";  //Chỉ các bản ghi có cột room_status có giá trị available mới được phép xóa.
+        String query = "DELETE FROM room WHERE room_id = ? AND room_status = 'available'";  //Chỉ các bản ghi có cột room_status có giá trị available mới được phép xóa.
         try (PreparedStatement pstmt = connection.prepareStatement(query)) {
             pstmt.setInt(1, roomId);
             return pstmt.executeUpdate() > 0;
