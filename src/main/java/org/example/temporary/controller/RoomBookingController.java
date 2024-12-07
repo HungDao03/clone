@@ -65,10 +65,12 @@ public class RoomBookingController extends HttpServlet {
             request.getRequestDispatcher("RoomBooking/listRoomBooking.jsp").forward(request, response);
         } catch (Exception e) {
             e.printStackTrace();
-            request.setAttribute("errorMessage", "Không thể lấy danh sách phòng.");
+            request.setAttribute("errorMessage", "Không thể lấy data.");
             request.getRequestDispatcher("RoomBooking/listRoomBooking.jsp").forward(request, response);
         }
     }
+
+
 
 
 

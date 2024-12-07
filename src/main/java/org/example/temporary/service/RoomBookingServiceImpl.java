@@ -15,6 +15,9 @@ public class RoomBookingServiceImpl implements RoomBookingService {
         this.roomBookingDAO = roomBookingDAO;
     }  //RoomService không trực tiếp quản lý Connection, mà chỉ sử dụng DAO để thực hiện các tác vụ.
 
+
+
+
     @Override
     public List<RoomBooking> getAllRooms() {
         try {
@@ -25,10 +28,22 @@ public class RoomBookingServiceImpl implements RoomBookingService {
         }
     }
 
+
+
     @Override
     public RoomBooking getRoomById(int roomId) {
         try {
             return roomBookingDAO.selectRoomById(roomId);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+
+    public RoomBooking getRoomByCode(String roomCode) {
+        try {
+            return roomBookingDAO.selectRoomByCode(roomCode);
         } catch (SQLException e) {
             e.printStackTrace();
             return null;

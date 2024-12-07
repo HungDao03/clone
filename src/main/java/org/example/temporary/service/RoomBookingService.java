@@ -12,6 +12,9 @@ public interface RoomBookingService {
 
     RoomBooking getRoomById(int roomId);
 
+
+    RoomBooking getRoomByCode(String roomCode);
+
     boolean addRoom(RoomBooking room);
 
 

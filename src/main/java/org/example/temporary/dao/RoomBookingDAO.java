@@ -14,6 +14,9 @@ public interface RoomBookingDAO {
     RoomBooking selectRoomById(int roomId) throws SQLException;
 
 
+    RoomBooking selectRoomByCode(String roomCode) throws SQLException;
+
+
     boolean insertRoom(RoomBooking room) throws SQLException;
 
 

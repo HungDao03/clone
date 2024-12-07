@@ -64,6 +64,41 @@ public class RoomBookingDaoImpl implements RoomBookingDAO {
         return null;   //Đây là else if, nếu không có dữ liệu sau khi đã (rs.next) thì nó sẽ trả về null.
     }
 
+
+    public RoomBooking selectRoomByCode(String roomCode) throws SQLException {
+        // Truy vấn SQL để tìm phòng theo mã phòng
+        String query = "SELECT * FROM room WHERE room_code = ?";
+        try (PreparedStatement pstmt = connection.prepareStatement(query)) {
+            // Gán giá trị tham số roomCode vào câu lệnh SQL
+            pstmt.setString(1, roomCode);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                // Nếu tìm thấy kết quả, tạo và trả về đối tượng RoomBooking
+                if (rs.next()) {
+                    return new RoomBooking(
+                            rs.getInt("RoomId"),
+                            rs.getInt("RoomTypeId"),
+                            rs.getInt("RoomOwner"),
+                            rs.getString("RoomCode"),
+                            rs.getString("RoomLocation"),
+                            rs.getString("RoomDescription"),
+                            rs.getString("RoomImgLink"),
+                            rs.getDouble("RoomPrice"),
+                            rs.getString("RoomStatus"),
+                            rs.getTimestamp("RoomCreateDate"),
+                            rs.getTimestamp("RoomUpdateDate")
+                    );
+                }
+            }
+        }
+        // Trả về null nếu không tìm thấy phòng
+        return null;
+    }
+
+
+
+
+
+
     public boolean insertRoom(RoomBooking room) throws SQLException {   //Truyền room chứa những dữ liệu do người dùng cung cấp vào phương thức này rồi sau đó gửi room chứa những dữ liệu mới này lên CSDL
         String query = "INSERT INTO room (room_type_id, room_owner, room_code, room_location, room_description, room_img_link, room_price, room_status, room_create_date, room_update_date) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         try (PreparedStatement pstmt = connection.prepareStatement(query)) {

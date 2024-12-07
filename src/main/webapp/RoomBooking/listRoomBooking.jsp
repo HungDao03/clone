@@ -7,72 +7,256 @@
 --%>
 <%@ page contentType="text/html; charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Room List</title>
-    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #34495e;
+            --accent-color: #3498db;
+        }
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 16px;
+            min-height: 100vh;
+        }
 
+        .page-header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 2.5rem 0;
+            margin-bottom: 2rem;
+            border-radius: 0 0 1.5rem 1.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .page-header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+
+        .container-fluid {
+            padding: 0 2rem;
+        }
+
+        .card {
+            border: none;
+            border-radius: 1.5rem;
+            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+            background: white;
+            padding: 1.5rem;
+            margin: 0 1rem;
+        }
+
+        .table {
+            margin-bottom: 0;
+            font-size: 1.1rem;
+        }
+
+        .table thead th {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 1.2rem 1rem;
+            font-weight: 600;
+            font-size: 1.2rem;
+            white-space: nowrap;
+        }
+
+        .table tbody td {
+            padding: 1.2rem 1rem;
+            vertical-align: middle;
+            font-size: 1.1rem;
+        }
+
+        .table-striped tbody tr:nth-of-type(odd) {
+            background-color: rgba(0, 0, 0, 0.02);
+        }
+
+        .btn {
+            border-radius: 0.5rem;
+            padding: 0.7rem 1.2rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 1rem;
+            letter-spacing: 0.5px;
+            margin: 0.25rem;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background-color: var(--accent-color);
+            border-color: var(--accent-color);
+        }
+
+        .btn-primary:hover {
+            background-color: #2980b9;
+            border-color: #2980b9;
+            transform: translateY(-1px);
+        }
+
+        .btn-danger {
+            background-color: #e74c3c;
+            border-color: #e74c3c;
+        }
+
+        .btn-danger:hover {
+            background-color: #c0392b;
+            border-color: #c0392b;
+            transform: translateY(-1px);
+        }
+
+        .alert {
+            border-radius: 0.5rem;
+            border: none;
+            margin-bottom: 2rem;
+            font-size: 1.1rem;
+        }
+
+        .room-status {
+            padding: 0.7rem 1.2rem;
+            border-radius: 2rem;
+            font-weight: 600;
+            text-align: center;
+            display: inline-block;
+            min-width: 120px;
+            font-size: 1rem;
+        }
+
+        .status-available {
+            background-color: #2ecc71;
+            color: white;
+        }
+
+        .status-occupied {
+            background-color: #e74c3c;
+            color: white;
+        }
+
+        .price {
+            font-weight: 700;
+            color: var(--primary-color);
+            font-size: 1.2rem;
+        }
+
+        .table-responsive {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        @media (min-width: 1400px) {
+            .container-fluid {
+                max-width: 1920px;
+                margin: 0 auto;
+            }
+        }
+
+        /* Tối ưu cho màn hình nhỏ */
+        @media (max-width: 768px) {
+            .btn {
+                width: 100%;
+                margin: 0.25rem 0;
+            }
+
+            .page-header h1 {
+                font-size: 2rem;
+            }
+
+            .table {
+                font-size: 1rem;
+            }
+        }
+    </style>
 </head>
 <body>
-<h1>Danh sách phòng</h1>
+<div class="page-header">
+    <div class="container-fluid">
+        <h1 class="text-center mb-0">
+            <i class="fas fa-hotel me-2"></i>
+            Danh sách phòng
+        </h1>
+    </div>
+</div>
 
-<!-- Hiển thị thông báo nếu có lỗi -->
-<c:if test="${not empty errorMessage}">
-    <p style="color: red;">${errorMessage}</p>
-</c:if>
+<div class="container-fluid">
+    <c:if test="${not empty errorMessage}">
+        <div class="alert alert-danger" role="alert">
+            <i class="fas fa-exclamation-circle me-2"></i>
+                ${errorMessage}
+        </div>
+    </c:if>
 
-<!-- Hiển thị bảng danh sách phòng -->
-<table border="1">
-    <thead>
-    <tr>
-        <th>Mã phòng</th>
-        <th>Mô tả phòng</th>
-        <th>Giá phòng</th>
-        <th>Trạng thái</th>
-        <th>Ngày tạo</th>
-        <th>Ngày cập nhật</th>
-        <th>Hành động</th>
-    </tr>
-    </thead>
-    <tbody>
-    <!-- Lặp qua danh sách phòng và hiển thị thông tin -->
-    <c:forEach var="roombookingsVar" items="${roomsbookings}">
-<%--         thông tin trong item đến từ [ request.setAttribute("roomsbooking", roomsbooking)  ] trong doGet hoặc doPost trong Controller--%>
-<%--        roomsbooking này là List<RoomBooking>  lấy từ Model, các biến roomCode,roomDescriptrong là lấy từ Model RoomBooking--%>
-        <tr>
-            <td>${roombookingsVar.roomCode}</td>
-            <td>${roombookingsVar.roomDescription}</td>
-            <td>${roombookingsVar.roomPrice}</td>
-            <td>${roombookingsVar.roomStatus}</td>
-            <td>${roombookingsVar.roomCreateDate}</td>
-            <td>${roombookingsVar.roomUpdateDate}</td>
-            <td>
+    <div class="card">
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th><i class="fas fa-hashtag me-2"></i>Mã phòng</th>
+                    <th><i class="fas fa-info-circle me-2"></i>Mô tả phòng</th>
+                    <th><i class="fas fa-image me-2"></i>Ảnh</th>
+                    <th><i class="fas fa-tag me-2"></i>Giá phòng</th>
+                    <th><i class="fas fa-clock me-2"></i>Trạng thái</th>
+                    <th><i class="fas fa-user me-2"></i>Khách hàng đang thuê</th>
+                    <th><i class="fas fa-map-marker-alt me-2"></i>Vị trí</th>
+                    <th><i class="fas fa-cogs me-2"></i>Thao tác</th>
+                </tr>
+                </thead>
+                <tbody>
+                <c:forEach var="roombookingsVar" items="${roomsbookings}">
+                    <tr>
+                        <td><strong>${roombookingsVar.roomCode}</strong></td>
+                        <td>${roombookingsVar.roomDescription}</td>
 
-<%--                GET: Lấy danh sách phòng booking trên CSDL về để truyền vào view jsp--%>
-            <%--    POST: Thêm phòng mới hoặc cập nhật phòng truyền từ jsp về csdl để thêm sửa xoá--%>
+                        <td>
+                            <img src="${roombookingsVar.roomImgLink}" alt="Room Image" width="50" height="50" class="img-thumbnail">
+                        </td>
 
-           <%-- pageContext.request.contextPath} chính là : http://localhost:8080/myHotelApp, contextPath chính là dòng myHotelApp--%>
-                <form action="${pageContext.request.contextPath}/RoomBooking/rentRoomForm_Temporary.jsp" method="POST">  <%--                    đoạn này phải sử dụng Post để sửa lại dữ liệu trên CSDL đoạn avaible sang rented.--%>
-                    <input type="hidden" name="roomCode" value="${roombookingsVar.roomCode}">
-                    <button type="submit" class="btn btn-danger">CHO THUÊ PHÒNG</button>
-                </form>
-                <form action="${pageContext.request.contextPath}/RoomBooking/returnRoom.jsp" method="POST">
-                    <input type="hidden" name="roomCode" value="${roombookingsVar.roomCode}">
-                    <button type="submit" class="btn btn-primary">TRẢ PHÒNG</button>
-                </form>
-            </td>
-        </tr>
-    </c:forEach>
-    </tbody>
-</table>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
+                        <td class="price">${roombookingsVar.roomPrice} VNĐ</td>
+
+
+                        <td>
+                                    <span class="room-status ${roombookingsVar.roomStatus == 'Available' ? 'status-available' : 'status-occupied'}">
+                                            ${roombookingsVar.roomStatus}
+                                    </span>
+                        </td>
+
+
+                        <td>${roombookingsVar.roomOwner}</td>
+                        <td>${roombookingsVar.roomLocation}</td>
+
+                        <td>
+                            <form action="${pageContext.request.contextPath}/RoomBooking/rentRoomForm_Temporary.jsp" method="POST" class="d-inline">
+                                <input type="hidden" name="roomCode" value="${roombookingsVar.roomCode}">
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-key me-1"></i> Cho thuê
+                                </button>
+                            </form>
+                            <form action="${pageContext.request.contextPath}/RoomBooking/returnRoom.jsp" method="POST" class="d-inline">
+                                <input type="hidden" name="roomCode" value="${roombookingsVar.roomCode}">
+                                <button type="submit" class="btn btn-danger">
+                                    <i class="fas fa-undo-alt me-1"></i> Trả phòng
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                </c:forEach>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"></script>
 </body>
 </html>
-
