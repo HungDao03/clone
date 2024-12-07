@@ -48,6 +48,7 @@ public class RoomRentFormController extends HttpServlet {
     // Xử lý yêu cầu GET: Lấy trên CSDL về để truyền vào view jsp
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.setCharacterEncoding("UTF-8");
         try {
             showRentRoomForm(request,response);
         } catch (ServletException er) {

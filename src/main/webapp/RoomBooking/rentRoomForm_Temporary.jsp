@@ -1,5 +1,9 @@
 <%@ page contentType="text/html; charset=UTF-8" language="java" %>
+<%@ page pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+
+<%@ page import="utils.EncodingUtil" %>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -15,26 +19,52 @@
     <!-- Hiển thị thông tin phòng -->
     <div>
         <label>Mã phòng:</label>
-        <div><strong>${roomsrentForm.roomCode}</strong></div>
+        <div><strong>${param.roomCode}</strong></div>
+        <input type="hidden" name="roomCode" value="${param.roomCode}">
     </div>
+
+    <%@ page import="java.net.URLDecoder" %>
+    <%
+        String roomDescription = request.getParameter("roomDescription");
+        if (roomDescription != null) {
+            roomDescription = new String(roomDescription.getBytes("ISO-8859-1"), "UTF-8");
+        }
+    %>
+
+
     <div>
         <label>Mô tả phòng:</label>
-        <div><strong>${roomsrentForm.roomDescription}</strong></div>
+        <div><strong>${EncodingUtil.fixEncoding(param.roomDescription)}</strong></div>
+
+<%--        Phương thức chuyển đổi ký tự lỗi này quá xịn--%>
     </div>
 
+<%--    <div>--%>
+<%--        <label>Mô tả phòng:</label>--%>
+<%--        <div><strong>${param.roomDescription}</strong></div>--%>
+<%--    </div>--%>
 
     <div>
-        <img src="${roomsrentForm.roomImgLink}" alt="Room Image" width="50" height="50" class="img-thumbnail">
+        <img src="${param.roomImgLink}" alt="Room Image" width="50" height="50" class="img-thumbnail">
     </div>
 
     <div>
         <label for="roomPrice">Giá phòng (VNĐ / giờ):</label>
-        <input type="number" id="roomPrice" name="roomPrice" value="${roombookingsVar.roomPrice}" readonly>
+        <input type="number" id="roomPrice" name="roomPrice" value="${param.roomPrice}" readonly>
     </div>
+
+
     <div>
-        <label for="roomLocation">Vị trí:</label>
-        <input type="text" id="roomLocation" name="roomLocation" value="${roombookingsVar.roomLocation}" readonly>
+        <label>Vị trí:</label>
+        <div><strong>${EncodingUtil.fixEncoding(param.roomLocation)}</strong></div>
     </div>
+
+
+
+
+
+
+
 
     <!-- Nhập thông tin khách thuê -->
     <div>

@@ -6,7 +6,9 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html; charset=UTF-8" language="java" %>
+<%@ page pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -234,9 +236,19 @@
                         <td>${roombookingsVar.roomOwner}</td>
                         <td>${roombookingsVar.roomLocation}</td>
 
+<%--                       phai bo sung accept-charset="UTF-8, khong thi se bị loi font--%>
                         <td>
-                            <form action="${pageContext.request.contextPath}/RoomBooking/rentRoomForm_Temporary.jsp" method="POST" class="d-inline">
+                            <form action="${pageContext.request.contextPath}/RoomBooking/rentRoomForm_Temporary.jsp" method="POST"   accept-charset="UTF-8" class="d-inline">
+
                                 <input type="hidden" name="roomCode" value="${roombookingsVar.roomCode}">
+<%--                                <input type="hidden" name="roomDescription" value="${roombookingsVar.roomDescription}">--%>
+                                <input type="hidden" name="roomDescription" value="<c:out value="${fn:escapeXml(roombookingsVar.roomDescription)}" />">
+
+
+
+                                <input type="hidden" name="roomImgLink" value="${roombookingsVar.roomImgLink}">
+                                <input type="hidden" name="roomPrice" value="${roombookingsVar.roomPrice}">
+                                <input type="hidden" name="roomLocation" value="${roombookingsVar.roomLocation}">
                                 <button type="submit" class="btn btn-primary">
                                     <i class="fas fa-key me-1"></i> Cho thuê
                                 </button>

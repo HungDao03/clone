@@ -84,6 +84,7 @@ public class RoomBookingController extends HttpServlet {
     // Xử lý yêu cầu POST: Thêm phòng mới hoặc cập nhật phòng truyền từ jsp về csdl để thêm sửa xoá
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.setCharacterEncoding("UTF-8");
         String action = request.getParameter("action");
         //action dùng để lấy thông tin của thẻ 'action'
         if ("add".equals(action)) {  // tức là sẽ so sánh với value trong <input type="hidden" name="action" value="add">
