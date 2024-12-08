@@ -5,6 +5,7 @@ import org.example.temporary.dao.RoomBookingDAO;
 import org.example.temporary.model.RoomBooking;
 
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.List;
 
 public class RoomBookingServiceImpl implements RoomBookingService {
@@ -21,7 +22,7 @@ public class RoomBookingServiceImpl implements RoomBookingService {
     @Override
     public List<RoomBooking> getAllRooms() {
         try {
-            return roomBookingDAO.selectAllRooms();
+            return roomBookingDAO.selectAllBooking();
         } catch (SQLException e) {
             e.printStackTrace();
             return null; // Trả về null nếu có lỗi xảy ra
@@ -33,7 +34,7 @@ public class RoomBookingServiceImpl implements RoomBookingService {
     @Override
     public RoomBooking getRoomById(int roomId) {
         try {
-            return roomBookingDAO.selectRoomById(roomId);
+            return roomBookingDAO.selectBookingById(roomId);
         } catch (SQLException e) {
             e.printStackTrace();
             return null;
@@ -71,21 +72,38 @@ public class RoomBookingServiceImpl implements RoomBookingService {
         }
     }
 
-
-  //phương thuc thử nghiem de sua du lieu tra ve tu rentroomform
+    @Override
     public boolean updateRoom(String roomCode, String customerName, String startTime, String endTime) {
+        return false;
+    }
+
+
+    //phương thuc thử nghiem de sua du lieu tra ve tu rentroomform
+    public boolean updateRoom_DatPhong(String customerName, Timestamp startTime, Timestamp endTime) {
         try {
             // Cập nhật trạng thái phòng thành 'rented'
-            boolean statusUpdated = roomBookingDAO.updateRoomStatustoSql(roomCode,customerName, startTime, endTime, "rented");
+            boolean statusUpdated = roomBookingDAO.updateRoomStatustoSql_DatPhong(customerName, startTime, endTime);
 
-
-            // Trả về true nếu cả hai thao tác thành công
             return statusUpdated;
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
         }
     }
+
+
+    public boolean updateRoom_HuyPhong(String customerName) {
+        try {
+            // Cập nhật trạng thái phòng thành 'rented'
+            boolean statusUpdated = roomBookingDAO.updateRoomStatustoSql_HuyPhong(customerName);
+
+            return statusUpdated;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
 
 
 

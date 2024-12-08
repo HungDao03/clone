@@ -20,7 +20,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.List;
 
-@WebServlet(name = "RoomRentFormController", urlPatterns = "/rentRoomForm")
+@WebServlet(name = "RoomRentFormController", urlPatterns = "/rentRoomForm_Temporary")
 public class RoomRentFormController extends HttpServlet {
     private RoomBookingDAO roomrentBookingDAO;
     private RoomBookingService roomrentBookingService;
@@ -78,11 +78,11 @@ public class RoomRentFormController extends HttpServlet {
             roomrentBookingService.updateRoom(roomCode, customerName, startTime, endTime);
 
             // Chuyển hướng về danh sách phòng
-            response.sendRedirect(request.getContextPath() + "/RoomBooking/listRoomBooking.jsp");
+            response.sendRedirect(request.getContextPath() + "/RoomBooking/rentRoomForm.jsp");
         } catch (Exception e) {
             e.printStackTrace();
             request.setAttribute("errorMessage", "Không thể cập nhật thông tin đặt phòng.");
-            request.getRequestDispatcher("RoomBooking/rentRoomForm_Temporary.jsp").forward(request, response);
+            request.getRequestDispatcher("RoomBooking/rentRoomForm.jsp").forward(request, response);
         }
     }
 

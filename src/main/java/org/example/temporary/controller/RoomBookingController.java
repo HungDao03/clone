@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.List;
 
 @WebServlet(name = "Controller", urlPatterns = "/main_roombooking")
@@ -32,8 +33,8 @@ public class RoomBookingController extends HttpServlet {
 
 
             Connection conn = DriverManager.getConnection(url, username, password);
-                roomBookingDAO = new RoomBookingDaoImpl(conn);
-                roomBookingService = new RoomBookingServiceImpl(roomBookingDAO);
+            roomBookingDAO = new RoomBookingDaoImpl(conn);
+            roomBookingService = new RoomBookingServiceImpl(roomBookingDAO);
 
 
         } catch (SQLException | ClassNotFoundException e) {
@@ -42,18 +43,16 @@ public class RoomBookingController extends HttpServlet {
     }
 
 
-
     // Xử lý yêu cầu GET: Lấy danh sách phòng booking trên CSDL về để truyền vào view jsp
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
-            showListRoomBooking(request,response);
+            showListRoomBooking(request, response);
         } catch (ServletException er) {
             er.printStackTrace();
         } catch (IOException io) {
             io.printStackTrace();
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -71,43 +70,87 @@ public class RoomBookingController extends HttpServlet {
     }
 
 
-
-
-
-
-
-
-
-
-
-
     // Xử lý yêu cầu POST: Thêm phòng mới hoặc cập nhật phòng truyền từ jsp về csdl để thêm sửa xoá
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
         String action = request.getParameter("action");
-        //action dùng để lấy thông tin của thẻ 'action'
-        if ("add".equals(action)) {  // tức là sẽ so sánh với value trong <input type="hidden" name="action" value="add">
-            RoomBooking room = new RoomBooking();
-            room.setRoomCode(request.getParameter("code"));  // Dùng ở  <label for="code">Room Code:</label>
-            room.setRoomDescription(request.getParameter("description"));
-            room.setRoomImgLink(request.getParameter("imgLink"));
-            room.setRoomPrice(Double.parseDouble(request.getParameter("price")));
-            room.setRoomStatus(request.getParameter("status"));
-            roomBookingService.addRoom(room);  //lấy thông tin nhập trong form về để truyền vào csdl
-        } else if ("update".equals(action)) {
-            RoomBooking room = new RoomBooking();
-            room.setRoomId(Integer.parseInt(request.getParameter("id")));
-            room.setRoomDescription(request.getParameter("description"));
-            room.setRoomImgLink(request.getParameter("imgLink"));
-            room.setRoomPrice(Double.parseDouble(request.getParameter("price")));
-            room.setRoomStatus(request.getParameter("status"));
-            roomBookingService.updateRoom(room); //lấy thông tin nhập trong form về để sửa room trong csdl
-        } else if ("delete".equals(action)) {
-            int roomId = Integer.parseInt(request.getParameter("id"));
-            roomBookingService.deleteRoom(roomId); //lấy ví trí thứ id nhập trong form về để xoa room trong csdl
-        }
 
-        response.sendRedirect("/main_roombooking");  // sau khi thực hiện thao tác thêm sửa xoá xong thì sẽ trả người dùng về trang chủ của bookingroom
+        try {
+            if ("add".equals(action)) { // Thêm mới một bản ghi đặt phòng
+                // Lấy thông tin từ request
+                String customerName = request.getParameter("customerName");
+                int roomTypeId = Integer.parseInt(request.getParameter("roomTypeId"));
+                String roomLocation = request.getParameter("roomLocation");
+                String roomDescription = request.getParameter("roomDescription");
+                String roomImgLink = request.getParameter("roomImgLink");
+                double roomPrice = Double.parseDouble(request.getParameter("roomPrice"));
+                String roomStatus = request.getParameter("roomStatus");
+                Timestamp bookingStartDate = Timestamp.valueOf(request.getParameter("bookingStartDate"));
+                Timestamp bookingEndDate = Timestamp.valueOf(request.getParameter("bookingEndDate"));
+                double bookingTotalPrice = Double.parseDouble(request.getParameter("bookingTotalPrice"));
+
+                // Tạo đối tượng RoomBooking
+                RoomBooking room = new RoomBooking(
+                        0, // BookingId sẽ được tự động tạo trong cơ sở dữ liệu
+                        customerName,
+                        roomTypeId,
+                        roomLocation,
+                        roomDescription,
+                        roomImgLink,
+                        roomPrice,
+                        roomStatus,
+                        bookingStartDate,
+                        bookingEndDate,
+                        bookingTotalPrice
+                );
+                // Gọi service để thêm đặt phòng
+                roomBookingService.updateRoom_DatPhong(customerName,bookingStartDate,bookingEndDate);
+
+            } else if ("datphong".equals(action)) { // Cập nhật thông tin đặt phòng
+                // Lấy thông tin từ request
+                int bookingId = Integer.parseInt(request.getParameter("bookingId"));
+                String customerName = request.getParameter("customerName");
+                int roomTypeId = Integer.parseInt(request.getParameter("roomTypeId"));
+                String roomLocation = request.getParameter("roomLocation");
+                String roomDescription = request.getParameter("roomDescription");
+                String roomImgLink = request.getParameter("roomImgLink");
+                double roomPrice = Double.parseDouble(request.getParameter("roomPrice"));
+                String roomStatus = request.getParameter("roomStatus");
+                Timestamp bookingStartDate = Timestamp.valueOf(request.getParameter("bookingStartDate"));
+                Timestamp bookingEndDate = Timestamp.valueOf(request.getParameter("bookingEndDate"));
+                double bookingTotalPrice = Double.parseDouble(request.getParameter("bookingTotalPrice"));
+
+                // Tạo đối tượng RoomBooking
+                RoomBooking room = new RoomBooking(
+                        bookingId,
+                        customerName,
+                        roomTypeId,
+                        roomLocation,
+                        roomDescription,
+                        roomImgLink,
+                        roomPrice,
+                        roomStatus,
+                        bookingStartDate,
+                        bookingEndDate,
+                        bookingTotalPrice
+                );
+
+                // Gọi service để cập nhật đặt phòng
+                roomBookingService.updateRoom_DatPhong(customerName,bookingStartDate,bookingEndDate);
+
+            } else if ("huyphong".equals(action)) { // Xóa đặt phòng
+                String customerName = request.getParameter("customerName");
+                roomBookingService.updateRoom_HuyPhong(customerName);
+            }
+
+            // Chuyển hướng về trang chính sau khi thao tác xong
+            response.sendRedirect("/main_roombooking");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            response.sendRedirect("/error_page"); // Chuyển hướng đến trang lỗi nếu có ngoại lệ
+        }
     }
 }
+
