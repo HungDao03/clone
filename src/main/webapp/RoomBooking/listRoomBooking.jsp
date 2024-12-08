@@ -1,10 +1,3 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: Mr Loc
-  Date: 12/7/2024
-  Time: 10:27 AM
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page contentType="text/html; charset=UTF-8" language="java" %>
 <%@ page pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
@@ -19,10 +12,41 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
+        /* Import các easings từ Open Props */
+        @import "https://unpkg.com/open-props@1.6.17/easings.min.css";
+
         :root {
             --primary-color: #2c3e50;
             --secondary-color: #34495e;
             --accent-color: #3498db;
+            --success-color: #2ecc71;
+            --danger-color: #e74c3c;
+            --black: hsl(0, 0%, 13%);
+            --white: hsl(0, 0%, 96%);
+        }
+
+        /* Animation Keyframes */
+        @keyframes slideIn {
+            from {
+                transform: translateY(-20px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes pulse {
+            50% {
+                transform: scale(1.05);
+            }
+        }
+
+        @keyframes glow {
+            50% {
+                box-shadow: 0 0 20px var(--accent-color);
+            }
         }
 
         body {
@@ -32,6 +56,7 @@
             min-height: 100vh;
         }
 
+        /* Enhanced Page Header */
         .page-header {
             background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
             color: white;
@@ -39,18 +64,27 @@
             margin-bottom: 2rem;
             border-radius: 0 0 1.5rem 1.5rem;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            animation: slideIn 0.8s var(--ease-spring-3);
         }
 
         .page-header h1 {
             font-size: 2.5rem;
             font-weight: 700;
             letter-spacing: 1px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .page-header h1 i {
+            animation: pulse var(--ease-elastic-in-1) 2s infinite;
+            display: inline-block;
         }
 
         .container-fluid {
             padding: 0 2rem;
         }
 
+        /* Enhanced Card Styling */
         .card {
             border: none;
             border-radius: 1.5rem;
@@ -58,8 +92,14 @@
             background: white;
             padding: 1.5rem;
             margin: 0 1rem;
+            transition: transform 0.3s var(--ease-spring-2);
         }
 
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        /* Enhanced Table Styling */
         .table {
             margin-bottom: 0;
             font-size: 1.1rem;
@@ -73,6 +113,13 @@
             font-weight: 600;
             font-size: 1.2rem;
             white-space: nowrap;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s var(--ease-spring-2);
+        }
+
+        .table thead th:hover {
+            background-color: var(--accent-color);
         }
 
         .table tbody td {
@@ -81,10 +128,20 @@
             font-size: 1.1rem;
         }
 
+        .table tbody tr {
+            transition: transform 0.3s var(--ease-spring-2);
+        }
+
+        .table tbody tr:hover {
+            transform: scale(1.01);
+            background-color: rgba(52, 152, 219, 0.1) !important;
+        }
+
         .table-striped tbody tr:nth-of-type(odd) {
             background-color: rgba(0, 0, 0, 0.02);
         }
 
+        /* Enhanced Button Styles */
         .btn {
             border-radius: 0.5rem;
             padding: 0.7rem 1.2rem;
@@ -93,7 +150,43 @@
             font-size: 1rem;
             letter-spacing: 0.5px;
             margin: 0.25rem;
-            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s var(--ease-spring-2);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .btn::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 5px;
+            height: 5px;
+            background: rgba(255,255,255,0.5);
+            opacity: 0;
+            border-radius: 100%;
+            transform: scale(1, 1) translate(-50%);
+            transform-origin: 50% 50%;
+        }
+
+        .btn:hover::after {
+            animation: ripple 1s ease-out;
+        }
+
+        @keyframes ripple {
+            0% {
+                transform: scale(0, 0);
+                opacity: 0.5;
+            }
+            100% {
+                transform: scale(40, 40);
+                opacity: 0;
+            }
         }
 
         .btn-primary {
@@ -104,27 +197,28 @@
         .btn-primary:hover {
             background-color: #2980b9;
             border-color: #2980b9;
-            transform: translateY(-1px);
         }
 
         .btn-danger {
-            background-color: #e74c3c;
-            border-color: #e74c3c;
+            background-color: var(--danger-color);
+            border-color: var(--danger-color);
         }
 
         .btn-danger:hover {
             background-color: #c0392b;
             border-color: #c0392b;
-            transform: translateY(-1px);
         }
 
+        /* Enhanced Alert Styling */
         .alert {
             border-radius: 0.5rem;
             border: none;
             margin-bottom: 2rem;
             font-size: 1.1rem;
+            animation: slideIn 0.5s var(--ease-spring-3);
         }
 
+        /* Enhanced Room Status Styling */
         .room-status {
             padding: 0.7rem 1.2rem;
             border-radius: 2rem;
@@ -133,29 +227,66 @@
             display: inline-block;
             min-width: 120px;
             font-size: 1rem;
+            transition: all 0.3s var(--ease-spring-2);
         }
 
         .status-available {
-            background-color: #2ecc71;
+            background-color: var(--success-color);
             color: white;
+            animation: pulse var(--ease-elastic-in-1) 2s infinite;
         }
 
         .status-occupied {
-            background-color: #e74c3c;
+            background-color: var(--danger-color);
             color: white;
+            position: relative;
+            overflow: hidden;
         }
 
+        .status-occupied:after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            animation: shine 2s infinite;
+        }
+
+        @keyframes shine {
+            to {
+                left: 100%;
+            }
+        }
+
+        /* Enhanced Price Styling */
         .price {
             font-weight: 700;
             color: var(--primary-color);
             font-size: 1.2rem;
+            position: relative;
+            /*display: inline-block;*/
         }
 
-        .table-responsive {
-            overflow-x: auto;
-            -webkit-overflow-scrolling: touch;
+        .price:hover {
+            animation: pulse var(--ease-elastic-in-1) 0.5s;
+            color: var(--accent-color);
+        }
+        /**/
+        /* Enhanced Image Styling */
+        .img-thumbnail {
+            transition: all 0.3s var(--ease-spring-2);
         }
 
+        .img-thumbnail:hover {
+            transform: scale(2);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            z-index: 1000;
+            position: relative;
+        }
+
+        /* Responsive Styling */
         @media (min-width: 1400px) {
             .container-fluid {
                 max-width: 1920px;
@@ -163,11 +294,15 @@
             }
         }
 
-        /* Tối ưu cho màn hình nhỏ */
         @media (max-width: 768px) {
             .btn {
                 width: 100%;
                 margin: 0.25rem 0;
+                transform-origin: center;
+            }
+
+            .btn:active {
+                transform: scale(0.95);
             }
 
             .page-header h1 {
@@ -177,6 +312,30 @@
             .table {
                 font-size: 1rem;
             }
+        }
+
+        /* Loading State */
+        .table-responsive {
+            position: relative;
+        }
+
+        .table-responsive.loading::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255,255,255,0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            animation: fadeIn 0.3s var(--ease-spring-2);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
     </style>
 </head>
@@ -218,34 +377,21 @@
                     <tr>
                         <td><strong>${roombookingsVar.roomCode}</strong></td>
                         <td>${roombookingsVar.roomDescription}</td>
-
                         <td>
                             <img src="${roombookingsVar.roomImgLink}" alt="Room Image" width="50" height="50" class="img-thumbnail">
                         </td>
-
                         <td class="price">${roombookingsVar.roomPrice} VNĐ</td>
-
-
                         <td>
                                     <span class="room-status ${roombookingsVar.roomStatus == 'Available' ? 'status-available' : 'status-occupied'}">
                                             ${roombookingsVar.roomStatus}
                                     </span>
                         </td>
-
-
                         <td>${roombookingsVar.roomOwner}</td>
                         <td>${roombookingsVar.roomLocation}</td>
-
-<%--                       phai bo sung accept-charset="UTF-8, khong thi se bị loi font--%>
                         <td>
-                            <form action="${pageContext.request.contextPath}/RoomBooking/rentRoomForm_Temporary.jsp" method="POST"   accept-charset="UTF-8" class="d-inline">
-
+                            <form action="${pageContext.request.contextPath}/RoomBooking/rentRoomForm_Temporary.jsp" method="POST" accept-charset="UTF-8" class="d-inline">
                                 <input type="hidden" name="roomCode" value="${roombookingsVar.roomCode}">
-<%--                                <input type="hidden" name="roomDescription" value="${roombookingsVar.roomDescription}">--%>
                                 <input type="hidden" name="roomDescription" value="<c:out value="${fn:escapeXml(roombookingsVar.roomDescription)}" />">
-
-
-
                                 <input type="hidden" name="roomImgLink" value="${roombookingsVar.roomImgLink}">
                                 <input type="hidden" name="roomPrice" value="${roombookingsVar.roomPrice}">
                                 <input type="hidden" name="roomLocation" value="${roombookingsVar.roomLocation}">
@@ -268,7 +414,4 @@
     </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"></script>
-</body>
-</html>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js
