@@ -3,6 +3,7 @@
   <component name="WebContextManager">
     <option name="state">
       <map>
+        <entry key="file://$PROJECT_DIR$/src/main/webapp/RoomBooking/listRoomBooking.jsp" value="file://$PROJECT_DIR$/src/main/webapp/RoomBooking" />
         <entry key="file://$PROJECT_DIR$/src/main/webapp/RoomBooking/rentRoomForm_Temporary.jsp" value="file://$PROJECT_DIR$/src/main/webapp/RoomBooking" />
       </map>
     </option>

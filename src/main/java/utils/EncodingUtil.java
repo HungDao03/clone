@@ -2,6 +2,7 @@ package utils;
 
 
 import java.io.UnsupportedEncodingException;
+//Ghi chú: có một vài lỗi ký tự trong quá trình truyền dữ liệu , cần phương thức này để chuyển đổi ký tự lỗi thành tiếng việt
 
 public class EncodingUtil {
     public static String fixEncoding(String input) {
