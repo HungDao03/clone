@@ -32,7 +32,7 @@ public interface RoomBookingDAO {
     boolean updateRoomtoSQL(RoomBooking room) throws SQLException;
 
 
-    boolean updateRoomStatustoSql_DatPhong(String customerName, Timestamp startTime, Timestamp endTime) throws SQLException;
+    boolean updateRoomStatustoSql_DatPhong(int bookingId, String customerName, Timestamp startTime, Timestamp endTime) throws SQLException;
     boolean updateRoomStatustoSql_HuyPhong(String customerName) throws SQLException;
 
 

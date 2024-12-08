@@ -106,6 +106,8 @@ public class RoomBookingDaoImpl implements RoomBookingDAO {
 //    }
 
 
+
+//phuong thuc nay khong co roomcode roi
     public RoomBooking selectRoomByCode(String roomCode) throws SQLException {
         // Truy vấn SQL để tìm phòng theo mã phòng
         String query = "SELECT * FROM room WHERE room_code = ?";
@@ -170,15 +172,30 @@ public class RoomBookingDaoImpl implements RoomBookingDAO {
     }
 
     //thu nghiem Phương thức này cập nhật trạng thái của phòng dựa trên mã phòng (roomCode).
-    public boolean updateRoomStatustoSql_DatPhong(String customerName, Timestamp startTime, Timestamp endTime) throws SQLException {
-        String query = "UPDATE Room SET RoomStatus = rented, CustomerName = ?, BookingStartDate = ?, BookingEndDate = ?, WHERE room_code = ?";
+    public boolean updateRoomStatustoSql_DatPhong(int bookingId, String customerName, Timestamp startTime, Timestamp endTime) throws SQLException {
+        String query = "UPDATE bookingver3 SET RoomStatus = 'rented', CustomerName = ?, BookingStartDate = ?, BookingEndDate = ? WHERE BookingId = ?";
         try (PreparedStatement pstmt = connection.prepareStatement(query)) {
             pstmt.setString(1, customerName);
             pstmt.setTimestamp(2, startTime);   // Thời gian bắt đầu đặt phòng (do người dùng nhập)
             pstmt.setTimestamp(3, endTime);
-            return pstmt.executeUpdate() > 0;
+            pstmt.setInt(4, bookingId);;
+            int rowsAffected = pstmt.executeUpdate(); // Thực thi câu lệnh
+            logRowsAffected(rowsAffected); // Log kết quả rowsAffected
+            return rowsAffected > 0;
         }
     }
+
+    private void logRowsAffected(int rowsAffected) {
+        if (rowsAffected > 0) {
+            System.out.println("Rows affected: " + rowsAffected + ". Update successful.");
+        } else if (rowsAffected == 0) {
+            System.out.println("Rows affected: 0. No rows were updated.");
+        } else {
+            System.err.println("Unexpected value of rowsAffected: " + rowsAffected);
+        }
+    }
+
+
 
 
     public boolean updateRoomStatustoSql_HuyPhong(String customerName) throws SQLException {
@@ -215,6 +232,10 @@ public class RoomBookingDaoImpl implements RoomBookingDAO {
             return pstmt.executeUpdate() > 0; //Phương thức trả về số lượng số nguyên đại diện cho số dòng bị thay đổi dữ liệu, trong trường hợp này nếu > 0 tức là đã có hơn 1 dòng bị thay đổi, nếu =0 tức là không có dòng nào bị thay đổi.
         }
     }
+
+
+
+
 
     //khong dung
     public boolean deleteRoomtoSQL(int bookingId) throws SQLException {

@@ -69,17 +69,18 @@ public class RoomBookingController extends HttpServlet {
         }
     }
 
-
+   //khong dùng
     // Xử lý yêu cầu POST: Thêm phòng mới hoặc cập nhật phòng truyền từ jsp về csdl để thêm sửa xoá
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
         String action = request.getParameter("action");
 
-        try {
+        try { //không dùng
             if ("add".equals(action)) { // Thêm mới một bản ghi đặt phòng
                 // Lấy thông tin từ request
                 String customerName = request.getParameter("customerName");
+                int roomId = Integer.parseInt(request.getParameter("roomId"));
                 int roomTypeId = Integer.parseInt(request.getParameter("roomTypeId"));
                 String roomLocation = request.getParameter("roomLocation");
                 String roomDescription = request.getParameter("roomDescription");
@@ -105,7 +106,7 @@ public class RoomBookingController extends HttpServlet {
                         bookingTotalPrice
                 );
                 // Gọi service để thêm đặt phòng
-                roomBookingService.updateRoom_DatPhong(customerName,bookingStartDate,bookingEndDate);
+                roomBookingService.updateRoom_DatPhong(roomTypeId, customerName,bookingStartDate,bookingEndDate);
 
             } else if ("datphong".equals(action)) { // Cập nhật thông tin đặt phòng
                 // Lấy thông tin từ request
@@ -137,7 +138,7 @@ public class RoomBookingController extends HttpServlet {
                 );
 
                 // Gọi service để cập nhật đặt phòng
-                roomBookingService.updateRoom_DatPhong(customerName,bookingStartDate,bookingEndDate);
+                roomBookingService.updateRoom_DatPhong(roomTypeId,customerName,bookingStartDate,bookingEndDate);
 
             } else if ("huyphong".equals(action)) { // Xóa đặt phòng
                 String customerName = request.getParameter("customerName");

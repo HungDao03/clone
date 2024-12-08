@@ -166,13 +166,15 @@
 
 
 
-                            <form action="rentRoomForm_Temporary.jsp" method="post" class="mt-2">
-                                <!-- Tham số cho trang rentRoomForm.jsp -->
-                                <input type="hidden" name="roomCode" value="${room.roomCode}">
-                                <input type="hidden" name="roomDescription" value="${room.roomDescription}">
+                            <form action="${pageContext.request.contextPath}/rentRoomForm_Temporary" method="get" class="mt-2">
+
+                            <!-- Tham số cho trang rentRoomForm.jsp -->
+<%--                                khong dung rooomtypeid keo bi loan--%>
+                              <input type="hidden" name="roomTypeId" value="${room.roomTypeId}">
+                              <input type="hidden" name="roomDescription" value="${room.roomDescription}">
                                 <input type="hidden" name="roomImgLink" value="${room.roomImgLink}">
-                                <input type="hidden" name="roomPrice" value="${room.roomPrice}">
-                                <input type="hidden" name="roomLocation" value="${room.roomLocation}">
+                               <input type="hidden" name="roomPrice" value="${room.roomPrice}">
+                               <input type="hidden" name="roomLocation" value="${room.roomLocation}">
                                 <input type="hidden" name="bookingId" value="${room.bookingId}">
 
                                 <!-- Nút bấm "Đặt phòng" -->
@@ -180,6 +182,10 @@
                                     <i class="fas fa-key me-1"></i> Đặt phòng
                                 </button>
                             </form>
+
+
+
+
 
                             <form action="main_roombooking" method="post" class="mt-2">
                                 <input type="hidden" name="action" value="huyphong">

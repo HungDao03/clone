@@ -24,11 +24,13 @@ public interface RoomBookingService {
 
 
     //phuong thuc thu nghiem
-    boolean updateRoom(String roomCode, String customerName, String startTime, String endTime);
+    boolean updateRoom(String roomTypeId, String customerName, String startTime, String endTime);
 
-    boolean updateRoom_DatPhong(String customerName, Timestamp startTime, Timestamp endTime);
+    boolean updateRoom_DatPhong(int bookingId, String customerName, Timestamp startTime, Timestamp endTime);
 
     boolean updateRoom_HuyPhong(String customerName);
 
     boolean deleteRoom(int roomId);
+
 }
+

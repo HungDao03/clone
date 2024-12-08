@@ -326,12 +326,12 @@
 </div>
 
 <div class="container animate-fade-in">
-    <form action="${pageContext.request.contextPath}/RoomBooking/RoomRentFormController"
+    <!-- Form GET -->
+    <form action="${pageContext.request.contextPath}/RoomBooking/RoomDetailsController"
           method="GET"
-          id="rentRoomForm"
+          id="roomDetailsForm"
           class="needs-validation"
           novalidate>
-
         <div class="room-info animate__animated animate__fadeIn shine-effect">
             <div class="row">
                 <div class="col-md-6">
@@ -342,21 +342,21 @@
                 </div>
                 <div class="col-md-6">
                     <div class="mb-3">
-                        <label class="form-label">Mã phòng:</label>
-                        <div class="h5">${param.roomCode}</div>
-                        <input type="hidden" name="roomCode" value="${param.roomCode}">
+                        <label class="form-label"> Số nhà: </label>
+                        <div class="h5">${param.bookingId}</div>
+                        <input type="hidden" name="bookingId" value="${param.bookingId}">
                     </div>
 
                     <div class="mb-3">
                         <label class="form-label">Mô tả phòng:</label>
-                        <div class="h6">${EncodingUtil.fixEncoding(param.roomDescription)}</div>
+                        <div class="h6">${param.roomDescription}</div>
                     </div>
 
                     <div class="mb-3">
                         <label class="form-label">Vị trí:</label>
                         <div class="h6">
                             <i class="fas fa-map-marker-alt text-danger"></i>
-                            ${EncodingUtil.fixEncoding(param.roomLocation)}
+                            ${param.roomLocation}
                         </div>
                     </div>
 
@@ -367,6 +367,27 @@
                 </div>
             </div>
         </div>
+    </form>
+
+
+
+
+
+
+
+
+    <!-- Form POST -->
+    <form action="${pageContext.request.contextPath}/rentRoomForm_Temporary"
+          method="POST"
+          id="rentRoomForm"
+          class="needs-validation"
+          novalidate>
+
+        <!-- Trường ẩn để gửi giá trị action -->
+        <input type="hidden" name="action" value="dat phong">
+
+<%--        Trường an de gui tra du lieu roomtypeID ve csdl--%>
+        <input type="hidden" name="bookingId" value="${param.bookingId}">
 
         <div class="form-group">
             <label for="customerName" class="form-label">
@@ -414,11 +435,15 @@
                     <i class="fas fa-arrow-left"></i> Quay lại
                 </a>
                 <button type="submit" class="btn btn-submit shine-effect">
-                    <i class="fas fa-save "></i> Xác nhận đặt phòng
+                    <i class="fas fa-save"></i> Xác nhận đặt phòng
                 </button>
             </div>
         </div>
     </form>
 </div>
+
+
+
+
 </body>
 </html>

@@ -8,6 +8,8 @@ import org.example.temporary.model.RoomBooking;
 import org.example.temporary.service.RoomBookingService;
 import org.example.temporary.service.RoomBookingServiceImpl;
 
+import java.sql.Timestamp;
+import java.util.Date;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -67,26 +69,47 @@ public class RoomRentFormController extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
 
-        // Lấy thông tin từ form
-        String roomCode = request.getParameter("roomCode");
-        String customerName = request.getParameter("customerName");
-        String startTime = request.getParameter("startTime");
-        String endTime = request.getParameter("endTime");
 
-        try {
-            // Cập nhật thông tin đặt phòng
-            roomrentBookingService.updateRoom(roomCode, customerName, startTime, endTime);
+        String action = request.getParameter("action");
 
-            // Chuyển hướng về danh sách phòng
-            response.sendRedirect(request.getContextPath() + "/RoomBooking/rentRoomForm.jsp");
-        } catch (Exception e) {
-            e.printStackTrace();
-            request.setAttribute("errorMessage", "Không thể cập nhật thông tin đặt phòng.");
-            request.getRequestDispatcher("RoomBooking/rentRoomForm.jsp").forward(request, response);
+
+        String startTimeStr = request.getParameter("startTime");
+        String endTimeStr = request.getParameter("endTime");
+
+       // Thay thế 'T' bằng khoảng trắng và thêm giây ":00" vào cuối
+        startTimeStr = startTimeStr.replace('T', ' ') + ":00";
+        endTimeStr = endTimeStr.replace('T', ' ') + ":00";
+
+        if ("dat phong".equals(action)) {
+            try {
+                int bookingId = Integer.parseInt(request.getParameter("bookingId"));
+
+                String customerName = request.getParameter("customerName");
+
+                Timestamp startTime = Timestamp.valueOf(startTimeStr);
+                Timestamp endTime = Timestamp.valueOf(endTimeStr);
+
+
+
+
+                // Gọi service để cập nhật thông tin đặt phòng
+                boolean isSuccess = roomrentBookingService.updateRoom_DatPhong(bookingId, customerName, startTime, endTime);
+
+
+                if (isSuccess) {
+                    response.sendRedirect("/main_roombooking"); // Chuyển đến trang chính sau thành công
+                } else {
+                    request.setAttribute("errorMessage", "Không thể cập nhật thông tin đặt phòng.");   //cai dat sau
+                    request.getRequestDispatcher("RoomBooking/rentRoomForm.jsp").forward(request, response);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                response.sendRedirect("/error_pageloiexception");
+            }
+        } else {
+            response.sendRedirect("/error_page_neukhongdatphongduoc");
         }
-    }
-
-
+        }
 
 
 
@@ -103,6 +126,5 @@ public class RoomRentFormController extends HttpServlet {
             request.getRequestDispatcher("RoomBooking/rentRoomForm_Temporary.jsp").forward(request, response);
         }
     }
-
 }
 

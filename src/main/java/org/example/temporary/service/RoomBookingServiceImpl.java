@@ -73,16 +73,16 @@ public class RoomBookingServiceImpl implements RoomBookingService {
     }
 
     @Override
-    public boolean updateRoom(String roomCode, String customerName, String startTime, String endTime) {
+    public boolean updateRoom(String roomtypeId, String customerName, String startTime, String endTime) {
         return false;
     }
 
 
     //phương thuc thử nghiem de sua du lieu tra ve tu rentroomform
-    public boolean updateRoom_DatPhong(String customerName, Timestamp startTime, Timestamp endTime) {
+    public boolean updateRoom_DatPhong(int bookingId, String customerName, Timestamp startTime, Timestamp endTime) {
         try {
             // Cập nhật trạng thái phòng thành 'rented'
-            boolean statusUpdated = roomBookingDAO.updateRoomStatustoSql_DatPhong(customerName, startTime, endTime);
+            boolean statusUpdated = roomBookingDAO.updateRoomStatustoSql_DatPhong(bookingId, customerName, startTime, endTime);
 
             return statusUpdated;
         } catch (SQLException e) {
