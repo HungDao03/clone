@@ -116,8 +116,31 @@ public class RoomBookingDaoImpl implements RoomBookingDAO {
         }
     }
 
+//thu nghiem Phương thức này cập nhật trạng thái của phòng dựa trên mã phòng (roomCode).
+    public boolean updateRoomStatustoSql(String roomCode, String room_owner, Timestamp startime, Timestamp endTime) throws SQLException {
+        String query = "UPDATE Room SET room_status = rented, room_owner = ?, room_update_date = ? WHERE room_code = ?";
+        try (PreparedStatement pstmt = connection.prepareStatement(query)) {
+            pstmt.setString(1, room_owner);
+            pstmt.setTimestamp(2, new Timestamp(System.currentTimeMillis()));
+            pstmt.setString(3, roomCode);
+            return pstmt.executeUpdate() > 0;
+        }
+    }
+//thu nghiem Phương thức này sẽ nhận một đối tượng RoomBooking (hoặc thông tin cần thiết khác) để chèn thông tin đặt phòng vào cơ sở dữ liệu.
+public boolean insertBookingToSql(String roomCode, String customerName, String startTime, String endTime) throws SQLException {
+    String query = "INSERT INTO Booking (room_code, customer_name, start_time, end_time) VALUES (?, ?, ?, ?)";
+    try (PreparedStatement pstmt = connection.prepareStatement(query)) {
+        pstmt.setString(1, roomCode); // Đặt mã phòng
+        pstmt.setString(2, customerName); // Đặt tên khách hàng
+        pstmt.setTimestamp(3, Timestamp.valueOf(startTime)); // Chuyển startTime thành Timestamp
+        pstmt.setTimestamp(4, Timestamp.valueOf(endTime)); // Chuyển endTime thành Timestamp
+        return pstmt.executeUpdate() > 0; // Thực hiện truy vấn và kiểm tra kết quả
+    }
+}
+
+
     public boolean updateRoomtoSQL(RoomBooking room) throws SQLException { //sửa thông tin ở một ví trí nào đó trong CSDL
-        String query = "UPDATE room SET room_type_id = ?, room_owner = ?, room_code = ?, room_location = ?, room_description = ?, room_img_link = ?, room_price = ?, room_status = ?, room_update_date = ? WHERE room_id = ?";
+        String query = "UPDATE room SET BookingId = ?, Userid = ?, room_code = ?, room_location = ?, room_description = ?, room_img_link = ?, room_price = ?, room_status = ?, room_update_date = ? WHERE room_id = ?";
         try (PreparedStatement pstmt = connection.prepareStatement(query)) {
             pstmt.setInt(1, room.getRoomTypeId());
             pstmt.setInt(2, room.getRoomOwner());
@@ -133,10 +156,10 @@ public class RoomBookingDaoImpl implements RoomBookingDAO {
         }
     }
 
-    public boolean deleteRoomtoSQL(int roomId) throws SQLException {
-        String query = "DELETE FROM room WHERE room_id = ? AND room_status = 'available'";  //Chỉ các bản ghi có cột room_status có giá trị available mới được phép xóa.
+    public boolean deleteRoomtoSQL(int bookingId) throws SQLException {
+        String query = "DELETE FROM booking WHERE BookingId = ? AND Bookingtatus = 'available'";  //Chỉ các bản ghi có cột room_status có giá trị available mới được phép xóa.
         try (PreparedStatement pstmt = connection.prepareStatement(query)) {
-            pstmt.setInt(1, roomId);
+            pstmt.setInt(1, bookingId);
             return pstmt.executeUpdate() > 0;
         }
     }

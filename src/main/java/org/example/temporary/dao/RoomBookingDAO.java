@@ -22,6 +22,14 @@ public interface RoomBookingDAO {
 
     boolean updateRoomtoSQL(RoomBooking room) throws SQLException;
 
+
+    //thu nghiem
+    public boolean updateRoomStatustoSql(String roomCode, String status) throws SQLException;
+
+    //thu nghiem
+    public boolean insertBookingToSql(String roomCode, String customerName, String startTime, String endTime) throws SQLException;
+
+
     boolean deleteRoomtoSQL(int roomId) throws SQLException;
 }
 

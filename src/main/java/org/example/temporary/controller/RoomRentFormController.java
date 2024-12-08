@@ -62,6 +62,36 @@ public class RoomRentFormController extends HttpServlet {
     }
 
 
+    // Xử lý yêu cầu POST: Cập nhật thông tin đặt phòng
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.setCharacterEncoding("UTF-8");
+
+        // Lấy thông tin từ form
+        String roomCode = request.getParameter("roomCode");
+        String customerName = request.getParameter("customerName");
+        String startTime = request.getParameter("startTime");
+        String endTime = request.getParameter("endTime");
+
+        try {
+            // Cập nhật thông tin đặt phòng
+            roomrentBookingService.updateRoom(roomCode, customerName, startTime, endTime);
+
+            // Chuyển hướng về danh sách phòng
+            response.sendRedirect(request.getContextPath() + "/RoomBooking/listRoomBooking.jsp");
+        } catch (Exception e) {
+            e.printStackTrace();
+            request.setAttribute("errorMessage", "Không thể cập nhật thông tin đặt phòng.");
+            request.getRequestDispatcher("RoomBooking/rentRoomForm_Temporary.jsp").forward(request, response);
+        }
+    }
+
+
+
+
+
+
+
     private void showRentRoomForm(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
             List<RoomBooking> roomsrentForm = roomrentBookingService.getAllRooms();
