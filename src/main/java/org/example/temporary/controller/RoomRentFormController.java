@@ -97,7 +97,13 @@ public class RoomRentFormController extends HttpServlet {
 
 
                 if (isSuccess) {
-                    response.sendRedirect("/main_roombooking"); // Chuyển đến trang chính sau thành công
+
+                    request.setAttribute("successMessage", "Đặt phòng thành công!");
+                    RequestDispatcher dispatcher = request.getRequestDispatcher("RoomBooking/thongbaodatphongthanhcong.jsp");
+                    dispatcher.forward(request, response);
+
+
+                    //                    response.sendRedirect("/main_roombooking"); // Chuyển đến trang chính sau thành công
                 } else {
                     request.setAttribute("errorMessage", "Không thể cập nhật thông tin đặt phòng.");   //cai dat sau
                     request.getRequestDispatcher("RoomBooking/rentRoomForm.jsp").forward(request, response);
