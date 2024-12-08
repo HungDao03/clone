@@ -4,7 +4,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Room Booking Management</title>
+    <title>Quản Lý Đặt Phòng Khách Sạn</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -118,7 +118,7 @@
 </head>
 <body>
 <div class="container">
-    <h1>Room Booking Management</h1>
+    <h1>QUẢN LÝ ĐĂT PHÒNG KHÁCH SẠN  </h1>
 
     <c:if test="${not empty errorMessage}">
         <div class="alert alert-danger" role="alert">
@@ -126,7 +126,7 @@
         </div>
     </c:if>
 
-    <h3 class="my-4">Current Bookings</h3>
+    <h3 class="my-4">Những phòng mà bạn đang sở hữu hiện tại </h3>
     <div class="row">
         <c:forEach items="${roomsbookings}" var="room">
             <div class="col-md-6">
@@ -136,12 +136,12 @@
                             <img src="${room.roomImgLink}" alt="Room Image" class="room-image img-thumbnail">
                         </div>
                         <div class="col-md-8">
-                            <h4>Room ${room.bookingId}</h4>
-                            <p><strong>Customer:</strong> ${room.customerName}</p>
-                            <p><strong>Location:</strong> ${room.roomLocation}</p>
-                            <p><strong>Status:</strong> ${room.roomStatus}</p>
-                            <p><strong>Price:</strong> $${room.roomPrice}</p>
-                            <p><strong>Booking Period:</strong><br>
+                            <h4>Phòng ${room.bookingId}</h4>
+                            <p><strong>Khách hàng:</strong> ${room.customerName}</p>
+                            <p><strong>Vị trí:</strong> ${room.roomLocation}</p>
+                            <p><strong>Tình trạng:</strong> ${room.roomStatus}</p>
+                            <p><strong>Giá cả:</strong> $${room.roomPrice}</p>
+                            <p><strong>Thời gian thuê:</strong><br>
                                 From: <fmt:formatDate value="${room.bookingStartDate}" pattern="yyyy-MM-dd HH:mm"/><br>
                                 To: <fmt:formatDate value="${room.bookingEndDate}" pattern="yyyy-MM-dd HH:mm"/>
                             </p>
