@@ -430,7 +430,7 @@
             </div>
 
             <div class="d-flex justify-content-between mt-4 shine-effect">
-                <a href="${pageContext.request.contextPath}/RoomBooking/roomList.jsp"
+                <a href="${pageContext.request.contextPath}/main_roombooking"
                    class="btn btn-back">
                     <i class="fas fa-arrow-left"></i> Quay lại
                 </a>

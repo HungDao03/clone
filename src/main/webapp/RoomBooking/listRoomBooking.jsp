@@ -4,121 +4,275 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Quản Lý Đặt Phòng Khách Sạn</title>
+
+    <title class="main-title">Quản Lý Đặt Phòng Khách Sạn</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
 
-        .btn-custom {
-            background-color: #007bff; /* Màu nền */
-            color: white; /* Màu chữ */
-            border: none; /* Không viền */
-            padding: 10px 20px; /* Khoảng cách padding */
-            font-size: 16px; /* Cỡ chữ */
-            border-radius: 5px; /* Bo góc */
-            cursor: pointer; /* Con trỏ chuột */
-            transition: background-color 0.3s, transform 0.2s; /* Hiệu ứng chuyển màu và thu phóng */
-        }
-
-        .btn-custom:hover {
-            background-color: #0056b3; /* Màu nền khi hover */
-            transform: scale(1.05); /* Hiệu ứng phóng to */
-        }
-
-        .btn-custom:focus {
-            outline: none; /* Xóa viền focus */
-        }
-
 
 
 
         :root {
-            --primary-color: #2c3e50;
-            --secondary-color: #34495e;
-            --accent-color: #3498db;
-            --success-color: #2ecc71;
-            --danger-color: #e74c3c;
+            --primary-color: #1a237e;
+            --secondary-color: #303f9f;
+            --accent-color: #3949ab;
+            --success-color: #43a047;
+            --danger-color: #e53935;
             --black: hsl(0, 0%, 13%);
             --white: hsl(0, 0%, 96%);
+            --shadow-color: rgba(0, 0, 0, 0.1);
         }
 
         body {
-            background-color: #f8f9fa;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
             font-family: 'Montserrat', sans-serif;
-            font-size: 16px;
             min-height: 100vh;
+            padding: 2rem 0;
         }
 
         .container {
             padding: 2rem 1rem;
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        h1 {
+            font-size: 2.8rem;
+            font-weight: 700;
+            text-align: center;
+            color: var(--primary-color);
+            margin-bottom: 2rem;
+            text-shadow: 2px 2px 4px var(--shadow-color);
+            position: relative;
+            padding-bottom: 1rem;
+        }
+
+        h1::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+            border-radius: 2px;
         }
 
         .room-card {
             border-radius: 1.5rem;
-            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+            box-shadow: 0 10px 20px var(--shadow-color);
             background: white;
             padding: 1.5rem;
             margin-bottom: 2rem;
-            transition: transform 0.3s ease-in-out;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            backdrop-filter: blur(10px);
         }
 
         .room-card:hover {
-            transform: translateY(-5px);
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
         }
 
         .room-image {
             border-radius: 1rem;
-            transition: transform 0.3s ease-in-out;
+            transition: all 0.5s ease;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 5px 15px var(--shadow-color);
         }
 
-        .room-image:hover {
+        .room-image img {
+            transition: transform 0.5s ease;
+            width: 100%;
+            height: auto;
+        }
+
+        .room-card:hover .room-image img {
             transform: scale(1.1);
         }
 
-        h1 {
-            font-size: 2.5rem;
-            font-weight: 700;
-            text-align: center;
-            color: var(--primary-color);
-            margin-bottom: 1.5rem;
-        }
-
-        .btn {
-            border-radius: 0.5rem;
-            padding: 0.7rem 1.2rem;
-            font-weight: 600;
+        .btn-custom {
+            background: linear-gradient(45deg, var(--primary-color), var(--accent-color));
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            font-size: 16px;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
             text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 4px 15px var(--shadow-color);
+            position: relative;
+            overflow: hidden;
         }
 
-        .btn-success {
-            background-color: var(--success-color);
-            border-color: var(--success-color);
+        .btn-custom::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(120deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: 0.5s;
         }
 
-        .btn-danger {
-            background-color: var(--danger-color);
-            border-color: var(--danger-color);
+        .btn-custom:hover::before {
+            left: 100%;
         }
 
-        .btn:hover {
-            transform: translateY(-2px);
+        .btn-custom:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+            color: white;
         }
 
         .alert {
-            border-radius: 0.5rem;
-            animation: fadeIn 0.5s ease-in-out;
+            border-radius: 1rem;
+            animation: slideInDown 0.5s ease-out;
+            box-shadow: 0 5px 15px var(--shadow-color);
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
+        /* Thông tin phòng */
+        .room-info {
+            padding: 1rem;
+        }
+
+        .room-info h4 {
+            color: var(--primary-color);
+            font-weight: 700;
+            margin-bottom: 1rem;
+            position: relative;
+            display: inline-block;
+        }
+
+        .room-info h4::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 50%;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent-color), transparent);
+        }
+
+        .room-info p {
+            margin-bottom: 0.8rem;
+            color: #666;
+            transition: color 0.3s ease;
+        }
+
+        .room-info p:hover {
+            color: var(--primary-color);
+        }
+
+        .room-info strong {
+            color: var(--secondary-color);
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            .room-card {
+                margin-bottom: 1.5rem;
+            }
+        }
+
+        /* Loading effect */
+        .page-loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            animation: fadeOut 1s ease-out forwards;
+            animation-delay: 0.5s;
+        }
+
+        @keyframes fadeOut {
+            to {
+                opacity: 0;
+                visibility: hidden;
+            }
+        }
+
+        /* Form enhancements */
+        form {
+            margin-top: 1.5rem;
+            display: inline-block;
+        }
+
+        form + form {
+            margin-left: 1rem;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
         }
     </style>
 </head>
 <body>
+<div class="page-loader">
+    <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Loading...</span>
+    </div>
+</div>
+
 <div class="container">
-    <h1>QUẢN LÝ ĐĂT PHÒNG KHÁCH SẠN  </h1>
+    <h1 class="main-title">QUẢN LÝ ĐẶT PHÒNG KHÁCH SẠN</h1>
 
     <c:if test="${not empty errorMessage}">
         <div class="alert alert-danger" role="alert">
@@ -126,73 +280,50 @@
         </div>
     </c:if>
 
-    <h3 class="my-4">Những phòng mà bạn đang sở hữu hiện tại </h3>
+    <h3 class="sub-title">Những phòng mà bạn đang sở hữu hiện tại</h3>
     <div class="row">
         <c:forEach items="${roomsbookings}" var="room">
             <div class="col-md-6">
                 <div class="room-card">
                     <div class="row">
                         <div class="col-md-4">
-                            <img src="${room.roomImgLink}" alt="Room Image" class="room-image img-thumbnail">
+                            <div class="room-image">
+                                <img src="${room.roomImgLink}" alt="Room Image" class="img-fluid">
+                            </div>
                         </div>
                         <div class="col-md-8">
-                            <h4>Phòng ${room.bookingId}</h4>
-                            <p><strong>Khách hàng:</strong> ${room.customerName}</p>
-                            <p><strong>Vị trí:</strong> ${room.roomLocation}</p>
-                            <p><strong>Tình trạng:</strong> ${room.roomStatus}</p>
-                            <p><strong>Giá cả:</strong> $${room.roomPrice}</p>
-                            <p><strong>Thời gian thuê:</strong><br>
-                                From: <fmt:formatDate value="${room.bookingStartDate}" pattern="yyyy-MM-dd HH:mm"/><br>
-                                To: <fmt:formatDate value="${room.bookingEndDate}" pattern="yyyy-MM-dd HH:mm"/>
-                            </p>
+                            <div class="room-info">
+                                <h4>Phòng ${room.bookingId}</h4>
+                                <p><strong>Khách hàng:</strong> ${room.customerName}</p>
+                                <p><strong>Vị trí:</strong> ${room.roomLocation}</p>
+                                <p><strong>Tình trạng:</strong> ${room.roomStatus}</p>
+                                <p><strong>Giá cả:</strong> $${room.roomPrice}</p>
+                                <p><strong>Thời gian thuê:</strong><br>
+                                    From: <fmt:formatDate value="${room.bookingStartDate}" pattern="yyyy-MM-dd HH:mm"/><br>
+                                    To: <fmt:formatDate value="${room.bookingEndDate}" pattern="yyyy-MM-dd HH:mm"/>
+                                </p>
 
+                                <div class="btn-group">
+                                    <form action="${pageContext.request.contextPath}/rentRoomForm_Temporary" method="get">
+                                        <input type="hidden" name="roomTypeId" value="${room.roomTypeId}">
+                                        <input type="hidden" name="roomDescription" value="${room.roomDescription}">
+                                        <input type="hidden" name="roomImgLink" value="${room.roomImgLink}">
+                                        <input type="hidden" name="roomPrice" value="${room.roomPrice}">
+                                        <input type="hidden" name="roomLocation" value="${room.roomLocation}">
+                                        <input type="hidden" name="bookingId" value="${room.bookingId}">
+                                        <button type="submit" class="btn btn-custom">
+                                            <i class="fas fa-key me-1"></i> Đặt phòng
+                                        </button>
+                                    </form>
 
-<%--                            <form action="${pageContext.request.contextPath}/RoomBooking/rentRoomForm_Temporary.jsp" method="POST" accept-charset="UTF-8" class="d-inline">--%>
-<%--                                <input type="hidden" name="roomCode" value="${roombookingsVar.roomCode}">--%>
-<%--                                <input type="hidden" name="roomDescription" value="<c:out value="${fn:escapeXml(roombookingsVar.roomDescription)}" />">--%>
-<%--                                <input type="hidden" name="roomImgLink" value="${roombookingsVar.roomImgLink}">--%>
-<%--                                <input type="hidden" name="roomPrice" value="${roombookingsVar.roomPrice}">--%>
-<%--                                <input type="hidden" name="roomLocation" value="${roombookingsVar.roomLocation}">--%>
-<%--                                <button type="submit" class="btn btn-primary">--%>
-<%--                                    <i class="fas fa-key me-1"></i> Cho thuê--%>
-<%--                                </button>--%>
-<%--                            </form>--%>
-<%--                            <form action="${pageContext.request.contextPath}/RoomBooking/returnRoom.jsp" method="POST" class="d-inline">--%>
-<%--                                <input type="hidden" name="roomCode" value="${roombookingsVar.roomCode}">--%>
-<%--                                <button type="submit" class="btn btn-danger">--%>
-<%--                                    <i class="fas fa-undo-alt me-1"></i> Trả phòng--%>
-<%--                                </button>--%>
-<%--                            </form>--%>
-
-
-
-                            <form action="${pageContext.request.contextPath}/rentRoomForm_Temporary" method="get" class="mt-2">
-
-                            <!-- Tham số cho trang rentRoomForm.jsp -->
-<%--                                khong dung rooomtypeid keo bi loan--%>
-                              <input type="hidden" name="roomTypeId" value="${room.roomTypeId}">
-                              <input type="hidden" name="roomDescription" value="${room.roomDescription}">
-                                <input type="hidden" name="roomImgLink" value="${room.roomImgLink}">
-                               <input type="hidden" name="roomPrice" value="${room.roomPrice}">
-                               <input type="hidden" name="roomLocation" value="${room.roomLocation}">
-                                <input type="hidden" name="bookingId" value="${room.bookingId}">
-
-                                <!-- Nút bấm "Đặt phòng" -->
-                                <button type="submit" class="btn btn-custom">
-                                    <i class="fas fa-key me-1"></i> Đặt phòng
-                                </button>
-                            </form>
-
-
-
-
-
-                            <form action="main_roombooking" method="post" class="mt-2">
-                                <input type="hidden" name="action" value="huyphong">
-                                <button type="submit" class="btn btn-custom">
-                                    <i class="fas fa-undo-alt me-1"></i> Trả phòng
-                                </button>
-                            </form>
+                                    <form action="main_roombooking" method="post">
+                                        <input type="hidden" name="action" value="huyphong">
+                                        <button type="submit" class="btn btn-custom">
+                                            <i class="fas fa-undo-alt me-1"></i> Trả phòng
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -200,6 +331,7 @@
         </c:forEach>
     </div>
 </div>
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
