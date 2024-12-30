@@ -34,7 +34,7 @@ public class RoomRentFormController extends HttpServlet {
             // Tạo kết nối tới cơ sở dữ liệu
             String url = "jdbc:mysql://localhost:3306/fake_hotell";
             String username = "root";
-            String password = "hikkiroku";
+            String password = "151003";
 
 
             Connection conn = DriverManager.getConnection(url, username, password);
